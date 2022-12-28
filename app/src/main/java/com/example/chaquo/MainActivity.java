@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         num2 =(EditText) findViewById(R.id.num2);
         btn =(Button) findViewById(R.id.btn);
         txt =(TextView) findViewById(R.id.textView);
+        num1.setVisibility(View.INVISIBLE);
+        num2.setVisibility(View.INVISIBLE);
         if (! Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
             System.out.println("python script running");
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PyObject obj = pyObject.callAttr("main",num1.getText().toString(),num2.getText().toString());
+                PyObject obj = pyObject.callAttr("main");
                 txt.setText(obj.toString());
             }
         });

@@ -22,7 +22,15 @@ android {
         }
         python {
             buildPython "C:/Users/shakila/AppData/Local/Programs/Python/Python38/python.exe"
-            buildPython "C:/Users/shakila/AppData/Local/Programs/Python/Python38/py.exe", "-3.8"
+
+        }
+        defaultConfig {
+            python {
+                pip {
+                    // A requirement specifier, with or without a version number:
+                    install "numpy"
+                }
+            }
         }
     }
     sourceSets {
