@@ -28,18 +28,26 @@ public class MainActivity extends AppCompatActivity {
         txt =(TextView) findViewById(R.id.textView);
         num1.setVisibility(View.INVISIBLE);
         num2.setVisibility(View.INVISIBLE);
+
         if (! Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
             System.out.println("python script running");
         }
-        Python py = Python.getInstance();
-        PyObject pyObject = py.getModule("script");
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PyObject obj = pyObject.callAttr("main");
-                txt.setText(obj.toString());
+                try {
+                    Python py = Python.getInstance();
+                    PyObject pyObject = py.getModule("script");
+                    PyObject obj = pyObject.callAttr("create_stream");
+                    txt.setText(obj.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
 }
+

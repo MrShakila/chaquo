@@ -1,7 +1,12 @@
-import numpy as np
-def main():
-    # num3 = int(num1)
-    # num4 = int(num2)
-    # result = num3 + num4
-    out = np.zeros(5)
-    return str(out)
+import pylsl
+
+def create_stream():
+    # Create the stream info
+    stream_info = pylsl.StreamInfo('My Stream', 'EEG', 4, 100, pylsl.cf_float32, 'myuniqueid23443')
+    # Create the outlet
+    outlet = pylsl.StreamOutlet(stream_info)
+    return outlet
+
+# Test the function
+outlet = create_stream()
+print(outlet)

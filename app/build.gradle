@@ -19,7 +19,14 @@ android {
         }
         python {
             version "3.8"
+
         }
+        python {
+            pyc {
+                src true
+                pip true
+
+            }}
         python {
             buildPython "C:/Users/shakila/AppData/Local/Programs/Python/Python38/python.exe"
 
@@ -27,16 +34,25 @@ android {
         defaultConfig {
             python {
                 pip {
-                    // A requirement specifier, with or without a version number:
-                    install "numpy"
+                    // A requirement specifier, with or without a version number
+                    install "pylsl"
                 }
             }
         }
     }
+
     sourceSets {
-        main {
-            python.srcDir "src/main/python"
+        for (path in [
+                "../../product/runtime/src/test",   // Unit tests
+                "src/utils"                         // Files shared with pkgtest app
+        ]) {
+            main {
+                java { srcDir "$path/java" }
+                python { srcDir "$path/python" }
+                res { srcDir "$path/res" }
+            }
         }}
+
     buildTypes {
         release {
             minifyEnabled false
