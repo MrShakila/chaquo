@@ -36,6 +36,7 @@ android {
                 pip {
                     // A requirement specifier, with or without a version number
                     install "pylsl"
+                    install "numpy"
                 }
             }
         }
