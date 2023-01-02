@@ -10,7 +10,10 @@
     <!-- Permission to access Bluetooth Low Energy -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <!-- Permission to access location information (required for BLE scanning) -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.ACCESS_BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Declare that the app uses Bluetooth Low Energy -->
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     <application

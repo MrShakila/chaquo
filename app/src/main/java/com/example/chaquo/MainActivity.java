@@ -1,16 +1,21 @@
 package com.example.chaquo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +26,10 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
-    EditText num1,num2;
+    EditText num1, num2;
     Button btn;
     TextView txt;
     private BluetoothAdapter bluetoothAdapter;
@@ -30,16 +37,16 @@ public class MainActivity extends AppCompatActivity {
     private EEGReceiver receiver;
 
     private BluetoothDevice museDevice;
-   // TextView museview;
+    // TextView museview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        num1 =(EditText) findViewById(R.id.num1);
-        num2 =(EditText) findViewById(R.id.num2);
-        btn =(Button) findViewById(R.id.btn);
-        txt =(TextView) findViewById(R.id.textView);
+        num1 = (EditText) findViewById(R.id.num1);
+        num2 = (EditText) findViewById(R.id.num2);
+        btn = (Button) findViewById(R.id.btn);
+        txt = (TextView) findViewById(R.id.textView);
         num1.setVisibility(View.INVISIBLE);
         num2.setVisibility(View.INVISIBLE);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -50,7 +57,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Start scanning for BLE devices
 
-        scanner.startScan(scanCallback);
+        try {
+            scanner.startScan(scanCallback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         if (! Python.isStarted()) {
@@ -96,12 +107,13 @@ public class MainActivity extends AppCompatActivity {
           //  museview.setText("Muse Connected");
             connectToMuse(device);
             // Enable notifications for the EEG data characteristic
-//        BluetoothGattService service = gatt.getService(UUID.fromString("0000aa10-0000-1000-8000-00805f9b34fb"));
-//        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString("0000aa11-0000-1000-8000-00805f9b34fb"));
-//        gatt.setCharacteristicNotification(characteristic, true);
-//        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
-//        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-//        gatt.writeDescriptor(descriptor);
+        BluetoothGattService service = gatt.getService(UUID.fromString("0000fe8d-0000-1000-8000-00805f9b34fb"));
+        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString("273e0004-4c4d-454d-96be-f03bac821358"));
+        gatt.readCharacteristic(characteristic)
+        gatt.setCharacteristicNotification(characteristic, true);
+        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
+        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+        gatt.writeDescriptor(descriptor);
         }
 
         // Callback for GATT events
